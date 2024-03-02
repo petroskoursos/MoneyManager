@@ -2,6 +2,7 @@ package com.example.bankaccount
 
 import android.provider.CalendarContract.Colors
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -36,11 +39,13 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun fixedPayments(){
+fun FixedPayments(navController: NavController){
     var value by remember{mutableStateOf("") }
     var list = remember { mutableStateListOf<String>() }
     var spending by remember { mutableStateOf("") }
@@ -52,6 +57,18 @@ fun fixedPayments(){
         .padding(top = 18.dp)
         , horizontalAlignment = Alignment.CenterHorizontally) {
         ///////OutlinedTextField value//////////
+        Row(modifier = Modifier
+            .fillMaxWidth()){
+            Button(onClick = {
+                navController.popBackStack()
+            },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White,
+                    contentColor = Color.Black
+                )) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription ="Back" )
+            }
+        }
         OutlinedTextField(value = value,
             onValueChange = { value=it},
             label = {
@@ -142,6 +159,6 @@ fun fixedPayments(){
 
 @Composable
 @Preview(showBackground = true)
-fun fixedPaymentsPreview(){
-    fixedPayments()
+fun FixedPaymentsPreview(){
+    FixedPayments(navController = rememberNavController())
 }

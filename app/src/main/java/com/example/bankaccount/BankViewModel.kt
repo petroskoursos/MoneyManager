@@ -11,24 +11,23 @@ class BankViewModel:ViewModel() {
     var expensesHolder= mutableStateListOf<Int>()
 
     fun addValue(isIncome:Boolean,value:String){
-        viewModelScope.launch {
+
             if(value.isNotEmpty() && isIncome){
                 incomeHolder.add(value.toInt())
 
             }else if(value.isNotEmpty() && !isIncome){
                 expensesHolder.add(value.toInt())
             }
-        }
+
     }
 
     fun removeLastValue(isIncome: Boolean){
-        viewModelScope.launch {
             if(isIncome && incomeHolder.isNotEmpty()){
                 incomeHolder.removeLast()
             }else if(!isIncome && expensesHolder.isNotEmpty()){
                 expensesHolder.removeLast()
             }
-        }
+
     }
 
     fun money():Int{
