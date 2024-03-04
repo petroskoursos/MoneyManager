@@ -2,6 +2,10 @@ package com.example.bankaccount
 
 import android.provider.CalendarContract.Colors
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +17,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -20,10 +25,13 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.DividerDefaults.color
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
@@ -36,9 +44,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
@@ -69,91 +79,74 @@ fun FixedPayments(navController: NavController){
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription ="Back" )
             }
         }
-        OutlinedTextField(value = value,
-            onValueChange = { value=it},
-            label = {
-                Text(text = "Enter Amount")
-            },
-            singleLine = true,
-            trailingIcon = {
-                Button(
-                    onClick = {
-                        isOpen = true
-                    }, colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = Color.Black
-                    )
-                ) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add ")
+        Box(modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color(0xFF1F3333))
+            .padding(horizontal = 100.dp, vertical = 10.dp)
+        ){
+            Text(text = "home", modifier = Modifier, Color.White)
+        }
+//        OutlinedTextField(value = value,
+//            onValueChange = { value=it},
+//            label = {
+//                Text(text = "Enter Amount")
+//            },
+//            singleLine = true,
+//            trailingIcon = {
+//                Button(
+//                    onClick = {
+//                        isOpen = true
+//                    }, colors = ButtonDefaults.buttonColors(
+//                        containerColor = Color.Transparent,
+//                        contentColor = Color.Black
+//                    )
+//                ) {
+//                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add ")
+//
+//                }
+//            })
 
-                }
-            })
-                /////////AlertDialogBox///////
-                if(isOpen) {
-                    AlertDialog(onDismissRequest = { isOpen = false },
-                        title = { Text(text = "Choose a color and specify your spending") },
-                        text = {
-                            Column(modifier = Modifier.fillMaxWidth()) {
-                                ////////spending text field
-                                OutlinedTextField(value = spending,
-                                    onValueChange = {
-                                        spending = it
-                                    }
-                                )
-                                Spacer(modifier = Modifier.padding(8.dp))
-                                /////color selecter
-                                Row(modifier = Modifier.fillMaxWidth()) {
-                                    Button(
-                                        onClick = {  color = Color.Red },
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = Color.Red
-                                        )
-                                    ) {
+        Spacer(modifier = Modifier.padding(vertical = 144.dp))
+        Column(modifier = Modifier.fillMaxWidth()
+            ,horizontalAlignment = Alignment.CenterHorizontally
+           ){
+            //Saving Button verticalArrangement = Arrangement.Center
+            Box(modifier = Modifier
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFF1F3333))
+                .padding(horizontal = 100.dp, vertical = 10.dp),
 
-                                    }
-                                    Button(
-                                        onClick = { color = Color.Red  },
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = Color.Yellow
-                                        )
-                                    ) {
-                                        Log.d("redd", String())
-                                    }
-                                    Button(
-                                        onClick = {  color = Color.Red },
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = Color.Blue
-                                        )
-                                    ) {
-
-                                    }
-                                }
-                            }
-                        },
-                        ///add button
-                        confirmButton = {
-                            Button(onClick = {
-                                if (spending.isNotEmpty()) {
-                                    list.add(spending)
-                                    spending=""
-                                    isOpen = false
-                                }
-                            }) {
-                                Text(text = "Add",color=color)
-                            }
-                        },
-                        dismissButton = {}
-                    )
-                }
-                LazyColumn(){
-                    items(list){
-                        Text(text = it, color = color)
-                    }
-
-                }
+            ){
+                Text(text = "Savings", modifier = Modifier,
+                    Color.White,
+                    fontSize = 20.sp)
             }
-
+            Spacer(modifier = Modifier.padding(vertical = 15.dp))
+            //Income Button
+            Box(modifier = Modifier.clickable {  }
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFF1F3333))
+                .padding(horizontal = 100.dp, vertical = 10.dp)
+            ){
+                Text(text = "Income", modifier = Modifier,
+                    Color.White,
+                    fontSize = 20.sp)
+            }
+            Spacer(modifier = Modifier.padding(vertical = 15.dp))
+            //Expense Button
+            Box(modifier = Modifier
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFF1F3333))
+                .padding(horizontal = 100.dp, vertical = 10.dp)
+            ){
+                Text(text = "Expenses", modifier = Modifier,
+                    Color.White,
+                    fontSize = 20.sp)
+            }
+        }
     }
+
+}
 
 
 
@@ -161,4 +154,61 @@ fun FixedPayments(navController: NavController){
 @Preview(showBackground = true)
 fun FixedPaymentsPreview(){
     FixedPayments(navController = rememberNavController())
+    /////////AlertDialogBox///////
+//    if(isOpen) {
+//        AlertDialog(onDismissRequest = { isOpen = false },
+//            title = { Text(text = "Choose a color and specify your spending") },
+//            text = {
+//                Column(modifier = Modifier.fillMaxWidth()) {
+//                    ////////spending text field
+//                    OutlinedTextField(value = spending,
+//                        onValueChange = {
+//                            spending = it
+//                        }
+//                    )
+//                    Spacer(modifier = Modifier.padding(8.dp))
+//                    /////color selecter
+//                    Row(modifier = Modifier.fillMaxWidth()) {
+//                        Button(
+//                            onClick = {  color = Color.Red },
+//                            colors = ButtonDefaults.buttonColors(
+//                                containerColor = Color.Red
+//                            )
+//                        ) {
+//
+//                        }
+//                        Button(
+//                            onClick = { color = Color.Red  },
+//                            colors = ButtonDefaults.buttonColors(
+//                                containerColor = Color.Yellow
+//                            )
+//                        ) {
+//                            Log.d("redd", String())
+//                        }
+//                        Button(
+//                            onClick = {  color = Color.Red },
+//                            colors = ButtonDefaults.buttonColors(
+//                                containerColor = Color.Blue
+//                            )
+//                        ) {
+//
+//                        }
+//                    }
+//                }
+//            },
+//            ///add button
+//            confirmButton = {
+//                Button(onClick = {
+//                    if (spending.isNotEmpty()) {
+//                        list.add(spending)
+//                        spending=""
+//                        isOpen = false
+//                    }
+//                }) {
+//                    Text(text = "Add",color=color)
+//                }
+//            },
+//            dismissButton = {}
+//        )
+//    }dismissButton
 }

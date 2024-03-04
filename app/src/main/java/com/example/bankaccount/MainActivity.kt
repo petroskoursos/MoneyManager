@@ -39,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,9 +60,14 @@ class MainActivity : ComponentActivity() {
                 navController = rememberNavController()
 
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color(0xFFFFFFFF), Color(0xFF0F6262)),
+                                startY = 0f,
+                                endY = 2500f
+                            ))
                 ) {
                     SetupNavGraph(navController = navController)
                 }

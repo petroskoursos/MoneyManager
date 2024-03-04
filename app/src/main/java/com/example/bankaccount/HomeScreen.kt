@@ -39,11 +39,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 @Preview(showBackground = true)
 fun BankPreview(){
-    //Bank(BankViewModel(), navController = )
+    Bank(BankViewModel(), navController = rememberNavController())
 }
 
 
@@ -57,9 +58,9 @@ fun Bank(
 
     var value by remember{ mutableStateOf("") }
     var isPressed by remember{ mutableStateOf(false) }
-    val txtColorT= MaterialTheme.colorScheme.primary
+    val txtColorT= Color.White
     val txtColorF= MaterialTheme.colorScheme.background
-    val backgroundColor= Color.Gray
+    val backgroundColor= Color(32,51,51)
     val columnshape= RoundedCornerShape(8.dp)
     Column(modifier = Modifier
         .padding(18.dp)
