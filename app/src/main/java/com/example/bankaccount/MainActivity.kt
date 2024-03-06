@@ -61,15 +61,18 @@ class MainActivity : ComponentActivity() {
 
                 // A surface container using the 'background' color from the theme
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .background(
                             Brush.verticalGradient(
                                 colors = listOf(Color(0xFFFFFFFF), Color(0xFF0F6262)),
                                 startY = 0f,
                                 endY = 2500f
-                            ))
+                            )
+                        )
                 ) {
-                    SetupNavGraph(navController = navController)
+                    IncomePage()
+                   //SetupNavGraph(navController = navController)
                 }
             }
         }
