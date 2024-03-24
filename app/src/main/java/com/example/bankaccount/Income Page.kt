@@ -13,8 +13,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,11 +33,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.bankaccount.Navigation.Screen
+import com.example.bankaccount.ViewModel.IncomePageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IncomePage(
-    incomePageViewModel: IncomePageViewModel= viewModel()
+    incomePageViewModel: IncomePageViewModel = viewModel(),
+    navController: NavController
 ){
     var dateList = remember{ mutableListOf<String>()}
     var amountList = remember{ mutableListOf<String>()}
@@ -44,6 +52,10 @@ fun IncomePage(
         .fillMaxSize()
         .padding(top = 41.dp)
         , horizontalAlignment = Alignment.CenterHorizontally) {
+        //Back Button
+        Button(onClick = { navController.navigate(Screen.Home.route) }) {
+            Icon(imageVector =Icons.Default.ArrowBack , contentDescription ="Back button" )
+        }
         ///Header income box
         Box(modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
@@ -77,7 +89,6 @@ fun IncomePage(
         // Add button
         Button(onClick = {
             if(amount.isNotEmpty() && date.isNotEmpty()){
-
                 incomePageViewModel.AddDateAmount(date,amount)
                 amount=""
                 date=""
@@ -132,5 +143,5 @@ fun IncomePage(
 @Composable
 @Preview(showBackground = true)
 fun IncomePagePreview(){
-    IncomePage()
+    IncomePage(navController = rememberNavController())
 }

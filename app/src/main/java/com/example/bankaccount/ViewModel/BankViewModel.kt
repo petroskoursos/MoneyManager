@@ -1,10 +1,7 @@
-package com.example.bankaccount
+package com.example.bankaccount.ViewModel
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
 
 class BankViewModel:ViewModel() {
     var incomeHolder = mutableStateListOf<Int>()

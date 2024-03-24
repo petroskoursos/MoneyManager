@@ -1,192 +1,189 @@
+@file:JvmName("HomeScreenKt")
+
 package com.example.bankaccount
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-
-@Composable
-@Preview(showBackground = true)
-fun BankPreview(){
-    Bank(BankViewModel(), navController = rememberNavController())
-}
-
+import com.example.bankaccount.ViewModel.BankViewModel
+import com.example.bankaccount.ViewModel.ExpensesVM
+import com.example.bankaccount.presetation.MoneyEvent
+import com.example.bankaccount.presetation.MoneyState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Bank(
-    bankViewModel: BankViewModel= viewModel(),
-    navController: NavController
-) {
+fun homeScreen(
+    expensesVM: ExpensesVM = viewModel(),
+   // state: MoneyState,
+    navController: NavController,
+    //onEvent: (MoneyEvent)->Unit
+){
 
-    var value by remember{ mutableStateOf("") }
-    var isPressed by remember{ mutableStateOf(false) }
-    val txtColorT= Color.White
-    val txtColorF= MaterialTheme.colorScheme.background
-    val backgroundColor= Color(32,51,51)
-    val columnshape= RoundedCornerShape(8.dp)
+    Scaffold(
+        topBar = {
+
+
+        }
+    ) {
+
+    }
     Column(modifier = Modifier
-        .padding(18.dp)
-        .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally){
+        .fillMaxSize()
+        .padding(top = 18.dp)
+        , horizontalAlignment = Alignment.CenterHorizontally) {
+        ///////OutlinedTextField value//////////
         Row(modifier = Modifier
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.End){
+            .fillMaxWidth()){
             Button(onClick = {
-                navController.navigate(route = Screen.Second.route)
+                navController.popBackStack()
             },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
                     contentColor = Color.Black
-                ),
-
-            ) {
-                Icon(imageVector = Icons.Default.ArrowForward, contentDescription ="Next" )
+                )) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription ="Back" )
             }
         }
-        ////////////////////TextField////////////////////
-        OutlinedTextField(
-            value =value,
-            onValueChange ={
-                value=it
-            },
-            label = { Text(text = if(isPressed)"Income" else "expenses") },
-            singleLine = true,
-            keyboardOptions =  KeyboardOptions(
-                keyboardType = KeyboardType.Number
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    bankViewModel.addValue(isPressed,value)
-                    value=""
-                }
-            )
-
-        )
-        //Button Row
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ){
-            ////////////////////Add button//////////////////////
-            Button(onClick = {
-                bankViewModel.addValue(isPressed,value)
-                value=""
-            }) {
-                Text(text = "add")
-            }
-            //////////////////Income/Expenses Button////////////////////
-            Button(onClick = {
-                isPressed= !isPressed
-            }
-            ) {
-                Text(text = if(isPressed)"Income" else "expenses")
-            }
-            ////////////////////Remove Button//////////////////////
-            Button(onClick = {
-                bankViewModel.removeLastValue(isPressed)
-            }) {
-                Text(text = "delete")
-            }
-        }
-        Spacer(modifier = Modifier.padding(top = 18.dp))
-        //////////////////////Current money////////////////////
         Box(modifier = Modifier
-            .background(backgroundColor, columnshape)
-            .padding(18.dp)){
-            Text(text = "Current Money: ${bankViewModel.money().toString()}")
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color(0xFF1F3333))
+            .padding(horizontal = 100.dp, vertical = 10.dp)
+        ){
+            Text(text = "home", modifier = Modifier, Color.White)
         }
-        ////////////////////Column for the Income/Expenses///////////////
-        Column {
-            Row(modifier = Modifier
-                .padding(18.dp)
-                .fillMaxWidth(),
-                /*horizontalArrangement = Arrangement.SpaceBetween*/){
-                ////////////////////Income///////////////
-                Column(modifier = Modifier
-                    .padding(18.dp)
-                    .background(backgroundColor, columnshape)
-                    .padding(8.dp)
-                    .weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "Income",
-                        color = if(isPressed) txtColorT else txtColorF
-                    )
-                    ///lazy column view list
-                    LazyColumn() {
-                        items(bankViewModel.incomeHolder) { amount ->
-                            Text(text = amount.toString())
-                        }
-                    }
-                    Text(text = "Income:${bankViewModel.income().toString()}",
-                        color = Color.Yellow
-                    )
-                }
-                /////////////////Expenses////////////////
-                Column(modifier = Modifier
-                    .padding(18.dp)
-                    .weight(1f)
-                    .background(backgroundColor, columnshape)
-                    .padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "Expenses",
-                        color = if(!isPressed) txtColorT else txtColorF,
+        Spacer(modifier = Modifier.padding(vertical = 144.dp))
+        Column(modifier = Modifier.fillMaxWidth()
+            ,horizontalAlignment = Alignment.CenterHorizontally
+           ){
+            //Saving Button verticalArrangement = Arrangement.Center
+            Box(modifier = Modifier
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFF1F3333))
+                .padding(horizontal = 100.dp, vertical = 10.dp),
 
-                        )
-                    ///lazy column view list
-                    LazyColumn() {
-                        items(bankViewModel.expensesHolder) { amount ->
-                            Text(text = amount.toString())
-                        }
-                    }
-                    Text(text = "Expenses:${bankViewModel.expenses().toString()}",
-                        color = Color.Yellow)
-                }
+            ){
 
+                Text(text = "Savings ${expensesVM.Saving()}", modifier = Modifier,
+                    Color.White,
+                    fontSize = 20.sp)
             }
-
+            Spacer(modifier = Modifier.padding(vertical = 15.dp))
+            //Income Button
+            Box(modifier = Modifier
+                .clickable { navController.navigate(route = "Income_screen") }
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFF1F3333))
+                .padding(horizontal = 100.dp, vertical = 10.dp)
+            ){
+                Text(text = "Income", modifier = Modifier,
+                    Color.White,
+                    fontSize = 20.sp)
+            }
+            Spacer(modifier = Modifier.padding(vertical = 15.dp))
+            //Expense Button
+            Box(modifier = Modifier
+                .clickable { navController.navigate(route = "Expense_screen") }
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFF1F3333))
+                .padding(horizontal = 100.dp, vertical = 10.dp)
+            ){
+                Text(text = "Expenses", modifier = Modifier,
+                    Color.White,
+                    fontSize = 20.sp)
+            }
         }
-
     }
-
 
 }
 
+
+
+@Composable
+@Preview(showBackground = true)
+fun FixedPaymentsPreview(){
+   homeScreen(navController = rememberNavController())
+    /////////AlertDialogBox///////
+//    if(isOpen) {
+//        AlertDialog(onDismissRequest = { isOpen = false },
+//            title = { Text(text = "Choose a color and specify your spending") },
+//            text = {
+//                Column(modifier = Modifier.fillMaxWidth()) {
+//                    ////////spending text field
+//                    OutlinedTextField(value = spending,
+//                        onValueChange = {
+//                            spending = it
+//                        }
+//                    )
+//                    Spacer(modifier = Modifier.padding(8.dp))
+//                    /////color selecter
+//                    Row(modifier = Modifier.fillMaxWidth()) {
+//                        Button(
+//                            onClick = {  color = Color.Red },
+//                            colors = ButtonDefaults.buttonColors(
+//                                containerColor = Color.Red
+//                            )
+//                        ) {
+//
+//                        }
+//                        Button(
+//                            onClick = { color = Color.Red  },
+//                            colors = ButtonDefaults.buttonColors(
+//                                containerColor = Color.Yellow
+//                            )
+//                        ) {
+//                            Log.d("redd", String())
+//                        }
+//                        Button(
+//                            onClick = {  color = Color.Red },
+//                            colors = ButtonDefaults.buttonColors(
+//                                containerColor = Color.Blue
+//                            )
+//                        ) {
+//
+//                        }
+//                    }
+//                }
+//            },
+//            ///add button
+//            confirmButton = {
+//                Button(onClick = {
+//                    if (spending.isNotEmpty()) {
+//                        list.add(spending)
+//                        spending=""
+//                        isOpen = false
+//                    }
+//                }) {
+//                    Text(text = "Add",color=color)
+//                }
+//            },
+//            dismissButton = {}
+//        )
+//    }dismissButton
+}
